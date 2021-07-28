@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>list to do</title>
+  </head>
+  <body>
+    <form id="taskForm">
+      <input type="text" id="taskInput">
+      <button>add Task</button>
+    </form>
+    <ul id="list">
+
+    </ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript">
+      taskForm.addEventListener('submit', function (e) {
+        e.preventDefault()
+        axios.post('/api/tasks', { name: taskInput.value })
+          .then(function (responce) {
+            let li = document.createElement('LI')
+            li.innerText = responce.data.name
+            list.appendChild(li)
+            taskInput.value = ''
+          })
+      })
+      axios.get('/api/tasks')
+        .then(function (responce) {
+          responce.data.forEach(function(item) {
+            let li = document.createElement('LI')
+            li.innerText = item.name
+            list.appendChild(li)
+          })
+        })
+    </script>
+  </body>
+</html>
